@@ -8,6 +8,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -32,11 +34,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -61,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float[] matrixValues;
     Marker marker;
     Marker destMarker;
+    Polyline polyline1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +125,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 myPos.latitude, myPos.longitude,
                                 results);
                         distance.setText("Distance = "+ results[0]);
+
+
+                        List<PatternItem> pattern = Arrays.asList(new Dash(30), new Gap(25));
+                        polyline1 = map.addPolyline(new PolylineOptions().add(new LatLng(destPos.latitude, destPos.longitude), new LatLng(myPos.latitude, myPos.longitude)).color(Color.RED));
+                        polyline1.setPattern(pattern);
+
                     }
                 });
 
@@ -126,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onClick(View v) {
                 destMarker.remove();
                 distance.setText("Distance = ");
+                polyline1.remove();
             }
         });
 
@@ -196,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             //MarkerOptions options = new MarkerOptions().position(latLng)
                             //        .title("I am here");
                             //Zoom map
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
                             //location.bearingTo()
 
