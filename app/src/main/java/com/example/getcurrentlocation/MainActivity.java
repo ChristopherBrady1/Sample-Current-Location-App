@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float[] matrixR;
     private float[] matrixI;
     private float[] matrixValues;
+    Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         matrixR = new float[9];
         matrixI = new float[9];
         matrixValues = new float[3];
+
+
     }
 
     @Override
@@ -133,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                     ,location.getLongitude());
                             //create marker options
                             //Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+
+                            marker = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("arrow", 100, 100))));
 
 
                             //changed icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
@@ -202,9 +207,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             double roll = Math.toDegrees(matrixValues[2]);
             if(!( Math.toDegrees(tempAz) == azimuth) ){
                 if(! (map == null)) {
-                    map.clear();
-                    LatLng latLng = map.getCameraPosition().target;
-                    Marker marker = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("arrow", 100, 100))));
+                    //map.clear();
+                    //LatLng latLng = map.getCameraPosition().target;
+                    //Marker marker = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("arrow", 100, 100))));
+                    marker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("arrow", 100, 100)));
+
                 }
             }
         }
