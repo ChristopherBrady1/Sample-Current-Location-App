@@ -7,9 +7,40 @@
     tools:context=".MainActivity">
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/google_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/removeMarker"
+        android:layout_width="119dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="500dp"
+        android:text="Remove Marker" />
+
+    <Button
+        android:id="@+id/addMarker"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="565dp"
+        android:text="Add Marker" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="634dp"
+        android:text="Distance = "
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 </RelativeLayout>

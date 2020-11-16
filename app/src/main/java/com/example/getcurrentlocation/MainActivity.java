@@ -17,8 +17,14 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float[] matrixI;
     private float[] matrixValues;
     Marker marker;
+    Marker destMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
+
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -77,6 +85,49 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         matrixR = new float[9];
         matrixI = new float[9];
         matrixValues = new float[3];
+
+        //button listeners
+        Button addMarker = findViewById(R.id.addMarker);
+        Button removeMarker = findViewById(R.id.removeMarker);
+        TextView distance = findViewById(R.id.distance);
+
+        addMarker.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng point) {
+                        //destMarker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude));
+                        //map.addMarker();
+                        destMarker = map.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)));
+                        destMarker.setDraggable(true);
+                        map.setOnMapClickListener(null);
+
+                        //use these to get current position of marker:
+                        //var lat = marker.getPosition().lat();
+                        //var lng = marker.getPosition().lng();
+
+                        float[] results = new float[1];
+                        LatLng destPos = destMarker.getPosition();
+                        LatLng myPos = marker.getPosition();
+                        Location.distanceBetween(destPos.latitude, destPos.longitude,
+                                myPos.latitude, myPos.longitude,
+                                results);
+                        distance.setText("Distance = "+ results[0]);
+                    }
+                });
+
+            }
+        });
+
+
+        removeMarker.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                destMarker.remove();
+                distance.setText("Distance = ");
+            }
+        });
 
 
     }
@@ -221,4 +272,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
+
 }
